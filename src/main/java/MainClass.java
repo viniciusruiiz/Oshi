@@ -1,6 +1,8 @@
 
 import oshi.util.FormatUtil;
 
+import static java.lang.Thread.*;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,9 +14,12 @@ import oshi.util.FormatUtil;
  * @author Aluno
  */
 public class MainClass {
-    public static void main(String[] args) {
-        PcInfo i = new PcInfo();
-    
-        System.out.println(i.getModeloDoComputador());
+    public static void main(String[] args) throws InterruptedException {
+        PcLeitura i = new PcLeitura();
+
+        while (true) {
+            System.out.println(i);
+            sleep(1000);
+        }
     }
 }

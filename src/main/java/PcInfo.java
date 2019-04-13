@@ -1,15 +1,18 @@
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import oshi.SystemInfo;
 import oshi.hardware.HWDiskStore;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.software.os.OperatingSystem;
 import oshi.util.FormatUtil;
 
 public class PcInfo {
-    private SystemInfo sy;
+    private SystemInfo systemInfo;
+    private HardwareAbstractionLayer hardware;
+    private OperatingSystem operatingSystem;
     
     public PcInfo(){
-        sy = new SystemInfo();
+        systemInfo = new SystemInfo();
+        hardware = systemInfo.getHardware();
+        operatingSystem = systemInfo.getOperatingSystem();
     }
     
     private String FormatarValor(long value){
@@ -17,62 +20,65 @@ public class PcInfo {
     }
     
     private int getNumeroDeDiscos(){
-        return sy.getHardware().getDiskStores().length;
+        return hardware.getDiskStores().length;
     }
     
     private HWDiskStore[] getDiscos(){
-        return sy.getHardware().getDiskStores();
+        return hardware.getDiskStores();
     }
     
     public String getSistemaOperacional(){
-        return sy.getOperatingSystem().toString();
+        return operatingSystem.toString();
     }
     
     public String getProcessador(){
-        return sy.getHardware().getProcessor().getName();
+        return hardware.getProcessor().getName();
     }
     
     public String getRam(){
-        return FormatarValor(sy.getHardware().getMemory().getTotal());
+        return FormatarValor(hardware.getMemory().getTotal());
     }
     
     public String[] getNomeDosDiscos(){
-        String[] discos = new String[getNumeroDeDiscos()];
-        for(int i = 0; i < getNumeroDeDiscos(); i++){
+        int numeroDeDiscos = getNumeroDeDiscos();
+        String[] discos = new String[numeroDeDiscos];
+        for(int i = 0; i < numeroDeDiscos; i++){
             discos[i] = getDiscos()[i].getName();
         }
         return discos;
     }
                 
     public String[] getVelocidadeDosDiscos(){
-        String[] discos = new String[getNumeroDeDiscos()];
-        for(int i = 0; i < getNumeroDeDiscos(); i++){
+        int numeroDeDiscos = getNumeroDeDiscos();
+        String[] discos = new String[numeroDeDiscos];
+        for(int i = 0; i < numeroDeDiscos; i++){
             discos[0] = FormatarValor(getDiscos()[i].getTransferTime());
         }
         return discos;
     }
     
     public String[] getTamanhoDosDiscos(){
-        String[] discos = new String[getNumeroDeDiscos()];
-        for(int i = 0; i < getNumeroDeDiscos(); i++){
+        int numeroDeDiscos = getNumeroDeDiscos();
+        String[] discos = new String[numeroDeDiscos];
+        for(int i = 0; i < numeroDeDiscos; i++){
             discos[i] = FormatarValor(getDiscos()[i].getSize());
         }
         return discos;
     }
     
     public String getModeloDoComputador(){
-        return sy.getHardware().getComputerSystem().getModel();
+        return systemInfo.getHardware().getComputerSystem().getModel();
     }
     
     public String getNomeDoComputador(){
-        return sy.getOperatingSystem().getNetworkParams().getHostName();
+        return systemInfo.getOperatingSystem().getNetworkParams().getHostName();
     }
     
     public String getEnderecoDeIpv4(){
-        return sy.getOperatingSystem().getNetworkParams().getIpv4DefaultGateway();
+        return systemInfo.getOperatingSystem().getNetworkParams().getIpv4DefaultGateway();
     }
     
     public String getEnderecoDeIpv6(){
-        return sy.getOperatingSystem().getNetworkParams().getIpv6DefaultGateway();
+        return systemInfo.getOperatingSystem().getNetworkParams().getIpv6DefaultGateway();
     }
 }
