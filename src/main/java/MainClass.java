@@ -1,6 +1,3 @@
-
-import oshi.util.FormatUtil;
-
 import static java.lang.Thread.*;
 
 /*
@@ -16,6 +13,8 @@ import static java.lang.Thread.*;
 public class MainClass {
     public static void main(String[] args) throws InterruptedException {
         PcLeitura i = new PcLeitura();
+
+       // System.out.println(i.getFans());
 
         while (true) {
             System.out.println(i);
