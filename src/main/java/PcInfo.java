@@ -82,12 +82,15 @@ public class PcInfo {
     }
 
     public String getEnderecoDeIpv4(){
-        return operatingSystem.getNetworkParams().getIpv4DefaultGateway();
+        return hardware.getNetworkIFs()[0].getIPv4addr()[0];
     }
 
-    //NÃO TRAS NADA (A VERIFICAR)
     public String getEnderecoDeIpv6(){
-        return operatingSystem.getNetworkParams().getIpv6DefaultGateway();
+        return hardware.getNetworkIFs()[0].getIPv6addr()[0];
+    }
+
+    public String getDefaultGateway(){
+        return operatingSystem.getNetworkParams().getIpv4DefaultGateway();
     }
 
     @Override
@@ -113,6 +116,8 @@ public class PcInfo {
                 "endereco de IPV4: " + getEnderecoDeIpv4() +
                 "\n" +
                 "endereco de IPV6: " + getEnderecoDeIpv6() +
+                "\n" +
+                "gateway padrão: " + getDefaultGateway() +
                 "\n"
                 +"---- DISCOS ----" +
                 "\n";
