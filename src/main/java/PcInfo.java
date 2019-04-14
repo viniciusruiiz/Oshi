@@ -1,6 +1,6 @@
 import oshi.SystemInfo;
-import oshi.hardware.HWDiskStore;
 import oshi.hardware.HardwareAbstractionLayer;
+import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
 import oshi.util.FormatUtil;
 
@@ -20,11 +20,11 @@ public class PcInfo {
     }
     
     private int getNumeroDeDiscos(){
-        return hardware.getDiskStores().length;
+        return operatingSystem.getFileSystem().getFileStores().length;
     }
     
-    private HWDiskStore[] getDiscos(){
-        return hardware.getDiskStores();
+    private OSFileStore[] getDiscos(){
+        return operatingSystem.getFileSystem().getFileStores();
     }
     
     public String getSistemaOperacional(){
@@ -47,38 +47,88 @@ public class PcInfo {
         }
         return discos;
     }
-                
-    public String[] getVelocidadeDosDiscos(){
-        int numeroDeDiscos = getNumeroDeDiscos();
-        String[] discos = new String[numeroDeDiscos];
-        for(int i = 0; i < numeroDeDiscos; i++){
-            discos[0] = FormatarValor(getDiscos()[i].getTransferTime());
-        }
-        return discos;
-    }
     
     public String[] getTamanhoDosDiscos(){
         int numeroDeDiscos = getNumeroDeDiscos();
         String[] discos = new String[numeroDeDiscos];
         for(int i = 0; i < numeroDeDiscos; i++){
-            discos[i] = FormatarValor(getDiscos()[i].getSize());
+            discos[i] = FormatarValor(getDiscos()[i].getTotalSpace());
         }
         return discos;
     }
+
+    public String getArmazenamentoTotal(){
+        long tamanhoDosDiscos = 0;
+        for(int i = 0; i < getNumeroDeDiscos(); i++){
+            tamanhoDosDiscos += getDiscos()[i].getTotalSpace();
+        }
+        return FormatarValor(tamanhoDosDiscos);
+    }
     
     public String getModeloDoComputador(){
-        return systemInfo.getHardware().getComputerSystem().getModel();
+        return hardware.getComputerSystem().getModel();
     }
     
     public String getNomeDoComputador(){
-        return systemInfo.getOperatingSystem().getNetworkParams().getHostName();
+        String nomeDoComputador = systemInfo.getOperatingSystem().getNetworkParams().getHostName();
+        if(nomeDoComputador == "To Be Filled By O.E.M."){
+            return "Desktop (Sem modelo especificado)";
+        }
+        else {
+            return nomeDoComputador;
+        }
     }
-    
+
+    public String getNomePlacaMae(){
+        return hardware.getComputerSystem().getManufacturer();
+    }
+
+    public String getModeloPlacaMae(){
+        return hardware.getComputerSystem().getModel();
+    }
+
     public String getEnderecoDeIpv4(){
-        return systemInfo.getOperatingSystem().getNetworkParams().getIpv4DefaultGateway();
+        return operatingSystem.getNetworkParams().getIpv4DefaultGateway();
     }
-    
+
     public String getEnderecoDeIpv6(){
-        return systemInfo.getOperatingSystem().getNetworkParams().getIpv6DefaultGateway();
+        return operatingSystem.getNetworkParams().getIpv6DefaultGateway(); //NÃO TRAS NADA (A VERIFICAR)
+    }
+
+    @Override
+    public String toString() {
+        String toString = "-------- DADOS DO COMPUTADOR ---------" +
+                "\n" +
+                "nome do computador: " + getNomeDoComputador() +
+                "\n" +
+                "modelo do computador: " + getModeloDoComputador() +
+                "\n" +
+                "nome da placa-mãe: " + getNomePlacaMae() +
+                "\n" +
+                "modelo da placa-mãe: " + getModeloPlacaMae() +
+                "\n" +
+                "processador: " + getProcessador() +
+                "\n" +
+                "sistema operacional: "+ getSistemaOperacional() +
+                "\n" +
+                "memoria RAM: "+ getRam() +
+                "\n" +
+                "armazenamento total: " + getArmazenamentoTotal() +
+                "\n" +
+                "endereco de IPV4: " + getEnderecoDeIpv4() +
+                "\n" +
+                "endereco de IPV6: " + getEnderecoDeIpv6() +
+                "\n"
+                +"---- DISCOS ----" +
+                "\n";
+
+        for(int index = 1; index <= getNumeroDeDiscos(); index++){
+            toString += "nome do disco " + index + ": " + getNomeDosDiscos()[index - 1] +
+                    "\n" +
+                    "tamanho do disco " + index + ": " + getTamanhoDosDiscos()[index - 1] +
+                    "\n";
+        }
+
+        return toString;
     }
 }

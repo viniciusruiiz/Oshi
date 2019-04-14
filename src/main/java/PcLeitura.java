@@ -23,7 +23,7 @@ public class PcLeitura {
     }
 
     public double getProcessamento(){
-        return hardware.getProcessor().getSystemCpuLoad(); //não bate exatamente com a do windowns, apesar de parecido
+        return hardware.getProcessor().getSystemCpuLoad();
     }
 
     public long getRamDisponivel(){
@@ -47,15 +47,25 @@ public class PcLeitura {
         return hardware.getProcessor().getSystemUptime();
     }
 
-    /*
-    //Não esta funcionando (retorna 0)
     public double getTemperaturaDoProcessador(){
-        return hardware.getSensors().getCpuTemperature();
+        return hardware.getSensors().getCpuTemperature(); //NÃO TRAS NADA (A VERIFICAR)
     }
-    */
 
     @Override
     public String toString() {
-        return "processo: " + (getProcessamento() * 100) +"%\nram: "+ FormatarValor(getRamDisponivel()) +"\narmazenamento: "+ FormatarValor(getMemoriaDisponível()) + "\nnumero de processos ativos: " + (getNumeroDeProcessosAtivos() + "\ntempo que o pc esta ligado: " + getUpTime() + " segundos\n");
+        return  "-------- DADOS DA LEITURA DO COMPUTADOR ---------" +
+                "\n" +
+                "processamento: " + (getProcessamento() * 100) + "%" +
+                "\n" +
+                "temperatura do processador: " + getTemperaturaDoProcessador() +
+                "\n" +
+                "ram: "+ FormatarValor(getRamDisponivel()) +
+                "\n" +
+                "armazenamento: "+ FormatarValor(getMemoriaDisponível()) +
+                "\n" +
+                "numero de processos ativos: " + getNumeroDeProcessosAtivos() +
+                "\n" +
+                "tempo que o pc esta ligado: " + getUpTime() + " segundos" +
+                "\n";
     }
 }
