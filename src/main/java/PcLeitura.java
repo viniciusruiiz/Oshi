@@ -47,8 +47,9 @@ public class PcLeitura {
         return hardware.getProcessor().getSystemUptime();
     }
 
+    //NÃO TRAS NADA (A VERIFICAR)
     public double getTemperaturaDoProcessador(){
-        return hardware.getSensors().getCpuTemperature(); //NÃO TRAS NADA (A VERIFICAR)
+        return hardware.getSensors().getCpuTemperature();
     }
 
     @Override

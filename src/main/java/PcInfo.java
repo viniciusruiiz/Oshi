@@ -70,13 +70,7 @@ public class PcInfo {
     }
     
     public String getNomeDoComputador(){
-        String nomeDoComputador = systemInfo.getOperatingSystem().getNetworkParams().getHostName();
-        if(nomeDoComputador == "To Be Filled By O.E.M."){
-            return "Desktop (Sem modelo especificado)";
-        }
-        else {
-            return nomeDoComputador;
-        }
+        return operatingSystem.getNetworkParams().getHostName();
     }
 
     public String getNomePlacaMae(){
@@ -91,8 +85,9 @@ public class PcInfo {
         return operatingSystem.getNetworkParams().getIpv4DefaultGateway();
     }
 
+    //NÃO TRAS NADA (A VERIFICAR)
     public String getEnderecoDeIpv6(){
-        return operatingSystem.getNetworkParams().getIpv6DefaultGateway(); //NÃO TRAS NADA (A VERIFICAR)
+        return operatingSystem.getNetworkParams().getIpv6DefaultGateway();
     }
 
     @Override
